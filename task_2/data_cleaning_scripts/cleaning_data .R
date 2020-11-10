@@ -6,9 +6,7 @@ library(here)
 #Reading in the two datasets 
 
 cake_ingredients_data <- read_csv(here("raw_data/cake-ingredients-1961.csv")) 
-cake_abbreviations_data <- read_csv(here("raw_data/cake_ingredient_code.csv"))
-glimpse(cake_ingredients_data) 
-head(cake_ingredients_data) 
+cake_abbreviations_data <- read_csv(here("raw_data/cake_ingredient_code.csv")) 
 
 #Pivoting the data to be longer 
 
@@ -19,12 +17,12 @@ long_cake_data <- cake_ingredients_data %>%
                         names_to = "ingredients", 
                         values_to = "quantities") 
 
-#Imputing the missing values in quantities 
+#Imputing the missing values in quantities to 0 
 
 imputed_long_cake_data <- long_cake_data %>%
   mutate(quantities = coalesce(quantities, 0)) 
 
-#Doing a left join to join the second dataset 
+#Joining the second dataset 
 
 joined_data <- imputed_long_cake_data %>% 
   left_join(cake_abbreviations_data, by = c("ingredients" = "code")) 
@@ -37,10 +35,12 @@ joined_data_abbreviations_dropped <- joined_data %>%
 #Imputing missing values in measure to cup 
 
 imputed_data <- joined_data_abbreviations_dropped %>% 
-  mutate(measure = coalesce(measure, "cup"))
+  mutate(measure = coalesce(measure, "cup")) 
 
 #Cleaning names 
   
 imputed_clean_data <- clean_names(imputed_data) 
+
+#Writing to csv 
 
 write_csv(imputed_clean_data, "clean_cake_data.csv") 

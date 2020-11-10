@@ -25,6 +25,9 @@ For sponge cake, how many cups of ingredients are used in total?
 
 3.5 cups. 
 
+#Filtered by sponge cake and cup measurement 
+#Summed the total quantities where the measurement was cup 
+
 ```{r}
 clean_cake_data %>% 
   filter(cake == "Sponge") %>% 
@@ -69,10 +72,9 @@ clean_cake_data %>%
  
  Cream of tartar, egg white, dried currants, zwiebach, crushed ice, nuts, nutmeg and bananas. 
  
-#Grouped by ingredients 
-#Filter the quantities that are less than 0 
-#Create a new column with a count of the ingredient occurrences 
-#Filter to find ingredients that occurred once 
+#Filtered the quantities that are less than 0 
+#Created a new column with a count of the ingredient occurrences 
+#Filtered to find ingredients that occurred once 
  
 ```{r}
 clean_cake_data %>% 
@@ -81,4 +83,4 @@ clean_cake_data %>%
   mutate(ingredient_count = n()) %>% 
   filter(ingredient_count == 1) 
 ```
- 
+
