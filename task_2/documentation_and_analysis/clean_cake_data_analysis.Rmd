@@ -1,0 +1,17 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+clean_cake_data <- read_csv("clean_data/clean_cake_data.csv")
+```
+
+Which cake has the most cocoa in it? 
+
+```{r}
+clean_cake_data %>% 
+  filter(ingredient == "Cocoa") %>% 
+  slice_max(quantities, n = 1) 
+```
+
