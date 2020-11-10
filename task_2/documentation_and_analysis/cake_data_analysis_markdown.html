@@ -408,6 +408,55 @@ cake_abbreviations_data &lt;- read_csv(here(&quot;raw_data/cake_ingredient_code.
 <p>A left join was carried out to combine the two data sets on the primary key ingredients and code. I chose a left join because I wanted everything from the cake_ingredients_1961 data set to remain, regardless of whether there was a match in the cake_ingredient_code data set.</p>
 <pre class="r"><code>joined_data &lt;- imputed_long_cake_data %&gt;% 
   left_join(cake_abbreviations_data, by = c(&quot;ingredients&quot; = &quot;code&quot;)) </code></pre>
+<p>I dropped the ingredient list where it was only abreviations rather than full names.</p>
+<pre class="r"><code>joined_data_abbreviations_dropped &lt;- joined_data %&gt;% 
+  select(-ingredients) </code></pre>
+<p>Using the clean_names function from the janitor package I cleaned the data set.</p>
+<pre class="r"><code>imputed_clean_data &lt;- clean_names(joined_data_abbreviations_dropped) </code></pre>
+<p>I decided the missing values in quantities should be replaced with cup because the missing values were always for the ingredient named “sour cream cup”.</p>
+<pre class="r"><code>imputed_clean_data %&gt;% 
+  mutate(measure = coalesce(measure, &quot;cup&quot;)) </code></pre>
+<pre><code>## # A tibble: 612 x 4
+##    cake  quantities ingredient     measure   
+##    &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;     
+##  1 Angel       0.25 Almond essence teaspoon  
+##  2 Angel       0    Buttermilk     cup       
+##  3 Angel       0    Baking powder  teaspoon  
+##  4 Angel       0    Butter         cup       
+##  5 Angel       0    Bananas        one       
+##  6 Angel       0    Cocoa          tablespoon
+##  7 Angel       0    Cottage Cheese pound     
+##  8 Angel       0    Chocolate      ounce     
+##  9 Angel       0    Crushed Ice    cup       
+## 10 Angel       0    Crumbs         cup       
+## # … with 602 more rows</code></pre>
+<p>Finally I converted the clean data to a CSV file.</p>
+<pre class="r"><code>write_csv(imputed_clean_data, &quot;clean_cake_data.csv&quot;)  </code></pre>
+</div>
+<div id="analysing-the-data" class="section level2">
+<h2>Analysing the data</h2>
+<p>After installing the relevant packages, I read the data into a new notebook and answered the analysis questions in the task.</p>
+<ul>
+<li>Which cake has the most cocoa in it?</li>
+</ul>
+<p>One Bowl Chocolate.</p>
+<ul>
+<li>For sponge cake, how many cups of ingredients are used in total?</li>
+</ul>
+<p>3.5 Cups.</p>
+<ul>
+<li>How many ingredients are measured in teaspoons?</li>
+</ul>
+<p>8 Ingredients</p>
+<ul>
+<li>Which cake has the most unique ingredients?</li>
+</ul>
+<p>This question was a bit more complicated to answer so I have provided a bit of explanation.</p>
+<p>I had to first filter out quantities that were not greater than 0. Then I grouped by ingredient and created a new column with a count of ingredient occurrences. I ungrouped at this point. I made the assumption that the most unique ingredients were those used only once so I filtered the column of ingredient occurrences to be equal to 1. I grouped by cake and summed the number of unique ingredients in each cake. The cake that had the most unique ingredients was the angel cake.</p>
+<ul>
+<li>Which ingredients are used only once?</li>
+</ul>
+<p>Cream of tartar, egg white, dried currants, zwiebach, crushed ice, nuts, nutmeg and bananas.</p>
 </div>
 </div>
 

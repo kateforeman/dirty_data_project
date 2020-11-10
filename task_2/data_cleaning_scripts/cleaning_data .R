@@ -34,7 +34,7 @@ joined_data_abbreviations_dropped <- joined_data %>%
 
 #Cleaning names 
   
-imputed_clean_data <- clean_names(imputed_data) 
+imputed_clean_data <- clean_names(joined_data_abbreviations_dropped) 
 
 #Changing the missing values in quantitites to "cup" 
 

@@ -65,6 +65,48 @@ joined_data_abbreviations_dropped <- joined_data %>%
 Using the clean_names function from the janitor package I cleaned the data set. 
 
 ```{r}
-imputed_clean_data <- clean_names(imputed_data) 
+imputed_clean_data <- clean_names(joined_data_abbreviations_dropped) 
 ```
+
+I decided the missing values in quantities should be replaced with cup because the missing values were always for the ingredient named "sour cream cup". 
+
+```{r, message = FALSE} 
+imputed_clean_data %>% 
+  mutate(measure = coalesce(measure, "cup")) 
+```
+
+
+Finally I converted the clean data to a CSV file. 
+
+```{r}
+write_csv(imputed_clean_data, "clean_cake_data.csv")  
+```
+
+## Analysing the data 
+
+After installing the relevant packages, I read the data into a new notebook and answered the analysis questions in the task. 
+
+* Which cake has the most cocoa in it?    
+
+One Bowl Chocolate. 
+
+* For sponge cake, how many cups of ingredients are used in total? 
+
+3.5 Cups. 
+
+* How many ingredients are measured in teaspoons? 
+
+8 Ingredients 
+
+* Which cake has the most unique ingredients? 
+
+This question was a bit more complicated to answer so I have provided a bit of explanation. 
+
+I had to first filter out quantities that were not greater than 0. Then I grouped by ingredient and created a new column with a count of ingredient occurrences. I ungrouped at this point. I made the assumption that the most unique ingredients were those used only once so I filtered the column of ingredient occurrences to be equal to 1. I grouped by cake and summed the number of unique ingredients in each cake. The cake that had the most unique ingredients was the angel cake. 
+
+*  Which ingredients are used only once? 
+
+Cream of tartar, egg white, dried currants, zwiebach, crushed ice, nuts, nutmeg and bananas. 
+
+
 
