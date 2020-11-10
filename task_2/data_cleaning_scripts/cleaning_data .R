@@ -20,7 +20,7 @@ long_cake_data <- cake_ingredients_data %>%
                NG, NS, RM, SA, SC, SG, SR, SS, ST, VE, WR, YT, ZH), names_to = "ingredients", values_to = 
                  "quantities") 
 
-#Imputing the missing values 
+#Imputing the missing values in quantities 
 
 imputed_long_cake_data <- long_cake_data %>%
   mutate(quantities = coalesce(quantities, 0)) 
@@ -30,4 +30,16 @@ imputed_long_cake_data <- long_cake_data %>%
 joined_data <- imputed_long_cake_data %>% 
   left_join(cake_abbreviations_data, by = c("ingredients" = "code")) 
 
+#Dropping ingredients abbreviations 
 
+joined_data_abbreviations_dropped <- joined_data %>% 
+  select(-ingredients) 
+
+#Imputing missing values in measure 
+
+imputed_data <- joined_data_abbreviations_dropped %>% 
+  mutate(measure = coalesce(measure, "cup"))
+
+#Cleaning names 
+  
+imputed_clean_data <- clean_names(imputed_data) 
