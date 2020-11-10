@@ -32,14 +32,14 @@ joined_data <- imputed_long_cake_data %>%
 joined_data_abbreviations_dropped <- joined_data %>% 
   select(-ingredients) 
 
-#Imputing missing values in measure to cup 
-
-imputed_data <- joined_data_abbreviations_dropped %>% 
-  mutate(measure = coalesce(measure, "cup")) 
-
 #Cleaning names 
   
 imputed_clean_data <- clean_names(imputed_data) 
+
+#Changing the missing values in quantitites to "cup" 
+
+imputed_clean_data %>% 
+  mutate(measure = coalesce(measure, "cup")) 
 
 #Writing to csv 
 

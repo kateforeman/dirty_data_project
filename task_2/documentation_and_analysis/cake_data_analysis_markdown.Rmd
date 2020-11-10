@@ -1,0 +1,70 @@
+---
+title: "Task 2: Cake data cleaning and analysis"
+output: html_document 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# The raw data  
+
+The task came with two raw data sets:    
+<ol>
+    <li> The first contained the cake names, abbreviations of the ingredients and quantities </li>
+    <li> The second contained the abbreviations, full ingredient names and quantities of                  ingredients </li> 
+
+## Cleaning the raw data 
+
+After installing the relevant packages, I read in the two CSV files. 
+
+```{r, warning = FALSE, message = FALSE}
+library(tidyverse) 
+library(dplyr) 
+library(janitor) 
+library(here) 
+```
+
+```{r, message = FALSE}
+cake_ingredients_data <- read_csv(here("raw_data/cake-ingredients-1961.csv")) 
+cake_abbreviations_data <- read_csv(here("raw_data/cake_ingredient_code.csv"))
+```
+
+The first data set with the ingredient abbreviations was very wide as each ingredient was a column. To fix this I pivoted the data to a longer format, giving ingredients and quantities one column each. 
+
+```{r}
+long_cake_data <- cake_ingredients_data %>% 
+  pivot_longer(cols = c(AE, BM, BP, BR, BS, CA, CC, CE, CI, CS, CT, 
+                        DC, EG, EW, EY, FR, GN, HC, LJ, LR, MK, 
+                        NG, NS, RM, SA, SC, SG, SR, SS, ST, VE, WR, YT, ZH), 
+                        names_to = "ingredients", 
+                        values_to = "quantities") 
+```
+
+The missing values in quantities were imputed to 0. 
+
+```{r}
+imputed_long_cake_data <- long_cake_data %>%
+  mutate(quantities = coalesce(quantities, 0)) 
+```
+
+A left join was carried out to combine the two data sets on the primary key ingredients and code. I chose a left join because I wanted everything from the cake_ingredients_1961 data set to remain, regardless of whether there was a match in the cake_ingredient_code data set. 
+
+```{r}
+joined_data <- imputed_long_cake_data %>% 
+  left_join(cake_abbreviations_data, by = c("ingredients" = "code")) 
+```
+
+I dropped the ingredient list where it was only abreviations rather than full names. 
+
+```{r}
+joined_data_abbreviations_dropped <- joined_data %>% 
+  select(-ingredients) 
+```
+
+Using the clean_names function from the janitor package I cleaned the data set. 
+
+```{r}
+imputed_clean_data <- clean_names(imputed_data) 
+```
+
