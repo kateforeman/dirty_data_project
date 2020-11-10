@@ -4,10 +4,16 @@ output: html_notebook
 ---
 
 ```{r}
-clean_cake_data <- read_csv("clean_data/clean_cake_data.csv")
+library(here)
+```
+
+```{r}
+clean_cake_data <- read_csv(here("clean_data/clean_cake_data.csv"))
 ```
 
 Which cake has the most cocoa in it? 
+
+One Bowl Chocolate. 
 
 ```{r}
 clean_cake_data %>% 
@@ -15,3 +21,64 @@ clean_cake_data %>%
   slice_max(quantities, n = 1) 
 ```
 
+For sponge cake, how many cups of ingredients are used in total? 
+
+3.5 cups. 
+
+```{r}
+clean_cake_data %>% 
+  filter(cake == "Sponge") %>% 
+  filter(measure == "cup") %>% 
+  summarise(total_cups = sum(quantities)) 
+  
+```
+
+How many ingredients are measured in teaspoons? 
+
+8 ingredients. 
+
+```{r}
+clean_cake_data %>% 
+  group_by(ingredient, measure) %>% 
+  distinct(ingredient) %>% 
+  filter(measure == "teaspoon") 
+```
+
+Which cake has the most unique ingredients? 
+
+Angel cake. 
+
+#Filtered out the ingredients that had a quantity of less than zero 
+#Created a new column containing the count of ingredient use 
+#Filtered to find the ingredients only used once 
+#Grouped by cake and made a new column containing the cakes with most unique ingredients 
+
+```{r}
+clean_cake_data %>% 
+  filter(quantities > 0.00) %>%
+  group_by(ingredient) %>% 
+  mutate(ingredient_count = n()) %>%
+  ungroup() %>%
+  filter(ingredient_count == 1) %>% 
+  group_by(cake) %>% 
+  summarise(num_ingredients = n()) 
+  
+```
+ 
+ Which ingredients are used only once? 
+ 
+ Cream of tartar, egg white, dried currants, zwiebach, crushed ice, nuts, nutmeg and bananas. 
+ 
+#Grouped by ingredients 
+#Filter the quantities that are less than 0 
+#Create a new column with a count of the ingredient occurrences 
+#Filter to find ingredients that occurred once 
+ 
+```{r}
+clean_cake_data %>% 
+  group_by(ingredient) %>% 
+  filter(quantities > 0) %>% 
+  mutate(ingredient_count = n()) %>% 
+  filter(ingredient_count == 1) 
+```
+ 
