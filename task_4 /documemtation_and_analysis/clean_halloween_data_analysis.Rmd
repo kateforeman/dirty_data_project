@@ -12,7 +12,7 @@ library(stringr)
 ```
 
 ```{r}
-candy_data <- read_csv(here("clean_data/cleaned_halloween_candy_data.CSV"))
+candy_data <- read_csv(here("clean_data/clean_halloween_candy_data.CSV"))
 ```
 
 ```{r}
@@ -23,7 +23,7 @@ sum(is.na(candy_data$ratings))
 What is the total number of candy ratings given across the three years 
 (Number of candy ratings, not number of raters. Don’t count missing values) 
 
-#There is no missing values in the ratings column so the total number of ratings is 542900
+There is no missing values in the ratings column so the total number of ratings is 542900
 
 ```{r}
 candy_data %>% 
@@ -32,6 +32,9 @@ candy_data %>%
 ```
 
 What was the average age of people who are going out trick or treating and the average age of people not going trick or treating? 
+
+Not going: 39 
+Going: 35 
 
 ```{r}
 candy_data %>% 
@@ -42,7 +45,7 @@ candy_data %>%
 
 For each of joy, despair and meh, which candy bar received the most of these ratings? 
 
-#Any full sized candy bar recieved the most joy ratings, mary janes recieved the most despair ratings and lollipops recieved the most meh ratings. 
+Reece's peanut butter cups recieved the most joy ratings, mary janes recieved the most despair ratings and lollipops recieved the most meh ratings. 
 
 ```{r}
 candy_data %>% 
@@ -51,8 +54,7 @@ candy_data %>%
   arrange(count)
 ``` 
 How many people rated Starburst as despair? 
-
-#Despair was put for Starburst 1990 times 
+RDespair was put for Starburst 1990 times 
 
 ```{r}
 candy_data %>% 
@@ -61,16 +63,11 @@ candy_data %>%
   summarise(starburst_rating = n())
   
 ```
-
-students_big %>% 
-  select(travel_to_school) %>% 
-  mutate(
-    travel_to_school = recode(travel_to_school, "Bus" = "bus", "Car" = "car", "Walk" = "walk")
-  )
   
 For the next three questions, count despair as -1, joy as +1 and meh as 0 
 
 What was the most popular candy bar by this rating system for each gender in the dataset? 
+#Recoding the ratings 
 
 ```{r}
 mutated_data <- candy_data %>% 
@@ -80,6 +77,25 @@ mutated_data <- candy_data %>%
 ```{r}
 mutated_data %>% 
   group_by(ratings, gender, candy) %>% 
-  summarise(count = n()) 
+  summarise(count = sum(ratings)) %>% 
+  filter(gender == "Male") %>% 
+  arrange(count) 
+```
+
+What was the most popular candy bar in each year? 
+
+Reece's peanut butter cups were the most popular candy bar in 2015 and 2017. KitKat was the most popular in 2016. 
+
+```{r}
+mutated_data %>% 
+  group_by(year, candy) %>% 
+  summarise(count = sum(ratings)) %>% 
+  arrange(count) 
+```
+
+What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries? 
+
+```{r}
+
 ```
 

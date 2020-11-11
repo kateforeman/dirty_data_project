@@ -36,7 +36,7 @@ q_dropped_2017 <- cleaned_names_data_2017 %>%
          -abstained_from_m_ming, -minibags_of_chips, 
          -sandwich_sized_bags_filled_with_boo_berry_crunch, 
          -spotted_dick, -those_odd_marshmallow_circus_peanut_things, -trail_mix, 
-         -white_bread)  
+         -white_bread, -any_full_sized_candy_bar)  
 
 renamed_age_2015 <- cleaned_names_data_2015 %>% 
   mutate(year = 2015) %>% 
@@ -80,7 +80,7 @@ renamed_age_2015 <- cleaned_names_data_2015 %>%
          -spotted_dick, -those_odd_marshmallow_circus_peanut_things, 
          -trail_mix, -white_bread, -lapel_pins, -mint_leaves, 
          -box_o_raisins, -brach_products_not_including_candy_corn, 
-         -peanut_butter_jars, -x100_grand_bar) 
+         -peanut_butter_jars, -x100_grand_bar, -any_full_sized_candy_bar) 
 
 rename_age_2016 <- cleaned_names_data_2016 %>% 
   mutate(year = 2016) %>% 
@@ -116,7 +116,7 @@ rename_age_2016 <- cleaned_names_data_2016 %>%
          -gum_from_baseball_cards, -hugs_actual_physical_hugs, -healthy_fruit, 
          -jolly_rancher_bad_flavor, -bonkers_the_board_game, -kale_smoothie, 
          -minibags_of_chips, -those_odd_marshmallow_circus_peanut_things, -white_bread, 
-         -trail_mix, -spotted_dick) 
+         -trail_mix, -spotted_dick, -any_full_sized_candy_bar) 
 
 #Renaming the going_out columns to all be the same 
 
@@ -283,7 +283,7 @@ dropping_missing_values <- long_data %>%
 removing_extra_age_information <- dropping_missing_values %>% 
   mutate(age = str_remove(age, "[A-Za-z-!'?]+")) 
          
-write_csv(removing_extra_age_information, "cleaned_halloween_candy_data.CSV") 
+write_csv(removing_extra_age_information, "clean_halloween_candy_data.CSV") 
 
 
 
