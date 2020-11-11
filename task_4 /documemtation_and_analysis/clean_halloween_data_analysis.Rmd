@@ -42,8 +42,44 @@ candy_data %>%
 
 For each of joy, despair and meh, which candy bar received the most of these ratings? 
 
+#Any full sized candy bar recieved the most joy ratings, mary janes recieved the most despair ratings and lollipops recieved the most meh ratings. 
+
 ```{r}
 candy_data %>% 
+  group_by(candy, ratings)  %>% 
+  summarise(count = n()) %>% 
+  arrange(count)
+``` 
+How many people rated Starburst as despair? 
+
+#Despair was put for Starburst 1990 times 
+
+```{r}
+candy_data %>% 
+  group_by(ratings) %>% 
+  filter(candy == "starburst") %>% 
+  summarise(starburst_rating = n())
   
+```
+
+students_big %>% 
+  select(travel_to_school) %>% 
+  mutate(
+    travel_to_school = recode(travel_to_school, "Bus" = "bus", "Car" = "car", "Walk" = "walk")
+  )
+  
+For the next three questions, count despair as -1, joy as +1 and meh as 0 
+
+What was the most popular candy bar by this rating system for each gender in the dataset? 
+
+```{r}
+mutated_data <- candy_data %>% 
+  mutate(ratings = recode(ratings, "DESPAIR" = -1, "JOY" = +1, "MEH" = 0))
+```
+
+```{r}
+mutated_data %>% 
+  group_by(ratings, gender, candy) %>% 
+  summarise(count = n()) 
 ```
 

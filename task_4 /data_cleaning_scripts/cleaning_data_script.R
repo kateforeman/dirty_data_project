@@ -283,7 +283,7 @@ dropping_missing_values <- long_data %>%
 removing_extra_age_information <- dropping_missing_values %>% 
   mutate(age = str_remove(age, "[A-Za-z-!'?]+")) 
          
-write_csv(removing_extra_age_information, "cleaned_halloween_candy_data.CSV")
+write_csv(removing_extra_age_information, "cleaned_halloween_candy_data.CSV") 
 
 
 
