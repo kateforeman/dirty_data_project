@@ -25,7 +25,12 @@ q_dropped_2017 <- cleaned_names_data_2017 %>%
          -candy_that_is_clearly_just_the_stuff_given_out_for_free_at_restaurants, 
          -cash_or_other_forms_of_legal_tender, -chardonnay, 
          -chick_o_sticks_we_don_t_know_what_that_is, -glow_sticks, -gum_from_baseball_cards, 
-         -hugs_actual_physical_hugs, -healthy_fruit) 
+         -hugs_actual_physical_hugs, -healthy_fruit, -jolly_rancher_bad_flavor, 
+         -bonkers_the_board_game, -kale_smoothie, 
+         -abstained_from_m_ming, -minibags_of_chips, 
+         -sandwich_sized_bags_filled_with_boo_berry_crunch, 
+         -spotted_dick, -those_odd_marshmallow_circus_peanut_things, -trail_mix, 
+         -white_bread)  
 
 renamed_age_2015 <- cleaned_names_data_2015 %>% 
   mutate(year = 2015) %>% 
@@ -64,11 +69,16 @@ renamed_age_2015 <- cleaned_names_data_2015 %>%
          -candy_that_is_clearly_just_the_stuff_given_out_for_free_at_restaurants, 
          -cash_or_other_forms_of_legal_tender, 
          -chick_o_sticks_we_don_t_know_what_that_is, -glow_sticks, 
-         -gum_from_baseball_cards, -hugs_actual_physical_hugs, -healthy_fruit) 
+         -gum_from_baseball_cards, -hugs_actual_physical_hugs, -healthy_fruit, 
+         -jolly_rancher_bad_flavor, -kale_smoothie, -minibags_of_chips, 
+         -spotted_dick, -those_odd_marshmallow_circus_peanut_things, 
+         -trail_mix, -white_bread) 
 
 rename_age_2016 <- cleaned_names_data_2016 %>% 
   mutate(year = 2016) %>% 
   rename(age = how_old_are_you) %>% 
+  rename(country = which_country_do_you_live_in) %>% 
+  rename(gender = your_gender) %>% 
   select(-timestamp, -york_peppermint_patties_ignore, 
          -when_you_see_the_above_image_of_the_4_different_websites_which_one_would_you_most_likely_check_out_please_be_honest, 
          -do_you_eat_apples_the_correct_way_east_to_west_side_to_side_or_do_you_eat_them_like_a_freak_of_nature_south_to_north_bottom_to_top, 
@@ -95,7 +105,9 @@ rename_age_2016 <- cleaned_names_data_2016 %>%
          -candy_that_is_clearly_just_the_stuff_given_out_for_free_at_restaurants, 
          -cash_or_other_forms_of_legal_tender, -chardonnay, 
          -chick_o_sticks_we_don_t_know_what_that_is, -glow_sticks, 
-         -gum_from_baseball_cards, -hugs_actual_physical_hugs, -healthy_fruit) 
+         -gum_from_baseball_cards, -hugs_actual_physical_hugs, -healthy_fruit, 
+         -jolly_rancher_bad_flavor, -bonkers_the_board_game, -kale_smoothie, 
+         -minibags_of_chips, -those_odd_marshmallow_circus_peanut_things, -white_bread) 
 
 rename_tricks_treating_2017 <- q_dropped_2017 %>% 
   rename(are_you_going_actually_going_trick_or_treating_yourself = going_out) 
