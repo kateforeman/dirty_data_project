@@ -5,13 +5,19 @@ library(here)
 library(stringr) 
 library(lubridate)
 
+#Reading in the data 
+
 data_2015 <- readxl::read_xlsx(here("raw_data/candy_ranking_data/boing-boing-candy-2015.xlsx")) 
 data_2016 <- readxl::read_xlsx(here("raw_data/candy_ranking_data/boing-boing-candy-2016.xlsx")) 
 data_2017 <- readxl::read_xlsx(here("raw_data/candy_ranking_data/boing-boing-candy-2017.xlsx")) 
 
+#Cleaning column names 
+
 cleaned_names_data_2015 <- clean_names(data_2015) 
 cleaned_names_data_2016 <- clean_names(data_2016) 
 cleaned_names_data_2017 <- clean_names(data_2017) 
+
+#Dropping the unecessary columns in all three datasets 
 
 q_dropped_2017 <- cleaned_names_data_2017 %>% 
   mutate(year = 2017) %>%
@@ -72,7 +78,9 @@ renamed_age_2015 <- cleaned_names_data_2015 %>%
          -gum_from_baseball_cards, -hugs_actual_physical_hugs, -healthy_fruit, 
          -jolly_rancher_bad_flavor, -kale_smoothie, -minibags_of_chips, 
          -spotted_dick, -those_odd_marshmallow_circus_peanut_things, 
-         -trail_mix, -white_bread) 
+         -trail_mix, -white_bread, -lapel_pins, -mint_leaves, 
+         -box_o_raisins, -brach_products_not_including_candy_corn, 
+         -peanut_butter_jars, -x100_grand_bar) 
 
 rename_age_2016 <- cleaned_names_data_2016 %>% 
   mutate(year = 2016) %>% 
@@ -107,12 +115,19 @@ rename_age_2016 <- cleaned_names_data_2016 %>%
          -chick_o_sticks_we_don_t_know_what_that_is, -glow_sticks, 
          -gum_from_baseball_cards, -hugs_actual_physical_hugs, -healthy_fruit, 
          -jolly_rancher_bad_flavor, -bonkers_the_board_game, -kale_smoothie, 
-         -minibags_of_chips, -those_odd_marshmallow_circus_peanut_things, -white_bread) 
+         -minibags_of_chips, -those_odd_marshmallow_circus_peanut_things, -white_bread, 
+         -trail_mix, -spotted_dick) 
+
+#Renaming the going_out columns to all be the same 
 
 rename_tricks_treating_2017 <- q_dropped_2017 %>% 
   rename(are_you_going_actually_going_trick_or_treating_yourself = going_out) 
 
+#Combining dataframes 
+
 combined <- bind_rows(rename_tricks_treating_2017, rename_age_2016, renamed_age_2015) 
+
+#Recoding country names 
 
 country_tidied_combined_data <- combined %>% 
   mutate(country = recode(country, "usa" = "USA", 
@@ -247,3 +262,29 @@ country_tidied_combined_data <- combined %>%
                           "CANADA" = "Canada", 
                           "Canada`" = "Canada", 
                           "Can" = "Canada")) 
+
+#Moving year to the beginning 
+
+year_first <- country_tidied_combined_data %>% 
+  select(year, everything()) 
+
+#Pivoting the dataset 
+
+long_data <- year_first %>% 
+  pivot_longer(cols = "100_grand_bar":peanut_butter_bars, names_to = "candy", values_to = "ratings")
+  
+#Dropping nas 
+
+dropping_missing_values <- long_data %>% 
+  drop_na(ratings) 
+
+#Removing any text from age column 
+
+removing_extra_age_information <- dropping_missing_values %>% 
+  mutate(age = str_remove(age, "[A-Za-z-!'?]+")) 
+         
+write_csv(removing_extra_age_information, "cleaned_halloween_candy_data.CSV")
+
+
+
+  
