@@ -35,9 +35,15 @@ What was the average age of people who are going out trick or treating and the a
 
 ```{r}
 candy_data %>% 
-  filter(are_you_going_actually_going_trick_or_treating_yourself == "No")
-  summarise(mean_age_trick_treating = mean(age))
+  filter(age < 100) %>% 
+  group_by(are_you_going_actually_going_trick_or_treating_yourself) %>% 
+  summarise(mean_age_trick_treating = mean(age)) 
 ```
 
-For each of joy, despair and meh, which candy bar revived the most of these ratings? 
+For each of joy, despair and meh, which candy bar received the most of these ratings? 
+
+```{r}
+candy_data %>% 
+  
+```
 
