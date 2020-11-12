@@ -98,4 +98,10 @@ Going: 35
 * Reece's peanut butter cups were the most popular candy bar in 2015 and 2017. KitKat was the most popular in 2016. 
 </ul> 
 
+<ul> 
+  <li> What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries? </li> 
+* In the US it was Reece's peanut butter cups, in Canada it was KitKat and in the UK it was toblerone. In the other countries no particular candy really stuck out in this rating system. The Netherlands had rated goo goo clusters, good n plenty, joy joy mit iodine, kinder happy hippo, lindt truffle and senior mints were all rated the highest. An example of some of the top ratings for Austria includes bottle caps, cadbury creme eggs, chiclets, coffee crisp, dove bars, fuzzy peaches, goo goo clusters and gummy bears straight up. An example of one of the most highly rated candy in Mexico is york peppermint patties. 
+</ul> 
+
+
 
