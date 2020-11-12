@@ -12,7 +12,7 @@ library(stringr)
 ```
 
 ```{r}
-candy_data <- read_csv(here("clean_data/clean_halloween_candy_data.CSV"))
+candy_data <- read_csv(here("clean_data/clean_halloween_candy_bar_data.CSV"))
 ```
 
 ```{r}
@@ -23,7 +23,7 @@ sum(is.na(candy_data$ratings))
 What is the total number of candy ratings given across the three years 
 (Number of candy ratings, not number of raters. Don’t count missing values) 
 
-There is no missing values in the ratings column so the total number of ratings is 542900
+There is no missing values in the ratings column so the total number of ratings is 534517
 
 ```{r}
 candy_data %>% 
@@ -54,7 +54,8 @@ candy_data %>%
   arrange(count)
 ``` 
 How many people rated Starburst as despair? 
-RDespair was put for Starburst 1990 times 
+
+Despair was put for Starburst 1990 times 
 
 ```{r}
 candy_data %>% 
@@ -67,6 +68,7 @@ candy_data %>%
 For the next three questions, count despair as -1, joy as +1 and meh as 0 
 
 What was the most popular candy bar by this rating system for each gender in the dataset? 
+
 #Recoding the ratings 
 
 ```{r}
@@ -74,13 +76,26 @@ mutated_data <- candy_data %>%
   mutate(ratings = recode(ratings, "DESPAIR" = -1, "JOY" = +1, "MEH" = 0))
 ```
 
+
+For females and males the most popular candy with this rating system was Reece's peanut butter cups. 
+
 ```{r}
 mutated_data %>% 
-  group_by(ratings, gender, candy) %>% 
+  group_by(gender, candy) %>% 
+  summarise(count = sum(ratings)) %>% 
+  filter(gender == "Female") %>% 
+  arrange(count) 
+```
+
+
+```{r}
+mutated_data %>% 
+  group_by(gender, candy) %>% 
   summarise(count = sum(ratings)) %>% 
   filter(gender == "Male") %>% 
   arrange(count) 
 ```
+
 
 What was the most popular candy bar in each year? 
 
@@ -95,7 +110,48 @@ mutated_data %>%
 
 What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries? 
 
-```{r}
+In the US it was Reece's peanut butter cups. 
 
+```{r}
+mutated_data %>% 
+  group_by(country, candy) %>% 
+  filter(country == "USA") %>% 
+  summarise(count = sum(ratings)) %>% 
+  arrange(count) 
+```
+
+
+In Canada it was KitKat. 
+
+```{r}
+mutated_data %>% 
+  group_by(country, candy) %>% 
+  filter(country == "Canada") %>% 
+  summarise(count = sum(ratings)) %>% 
+  arrange(count) 
+```
+
+
+In the UK it was toblerone. 
+
+```{r}
+mutated_data %>% 
+  group_by(country, candy) %>% 
+  filter(country == "UK") %>% 
+  summarise(count = sum(ratings)) %>% 
+  arrange(count) 
+```
+
+
+In the other countries no particular candy really stuck out in this rating system. The Netherlands had rated goo goo clusters, good n plenty, joy joy mit iodine, kinder happy hippo, lindt truffle and senior mints were all rated the highest. An example of some of the top ratings for Austria includes bottle caps, cadbury creme eggs, chiclets, coffee crisp, dove bars, fuzzy peaches, goo goo clusters and gummy bears straight up. An example of one of the most highly rated candy in Mexico is york peppermint patties. 
+
+```{r}
+mutated_data %>% 
+  group_by(country, candy) %>% 
+  filter(country != "USA") %>% 
+  filter(country != "Canada") %>% 
+  filter(country != "UK") %>% 
+  summarise(count = sum(ratings)) %>% 
+  arrange(count) 
 ```
 

@@ -3,7 +3,8 @@ library(dplyr)
 library(janitor) 
 library(here) 
 library(stringr) 
-library(lubridate)
+library(lubridate) 
+library(naniar) 
 
 #Reading in the data 
 
@@ -129,9 +130,26 @@ combined <- bind_rows(rename_tricks_treating_2017, rename_age_2016, renamed_age_
 
 #Recoding country names 
 
-country_tidied_combined_data <- combined %>% 
+#replace_with_na(replace = list(x = c(-99,-98),
+                               #z = c(-99, -98))) 
+
+
+replacing_with_na <- combined %>% 
+  replace_with_na(replace = list(country = c("Somewhere", "See above", "One of the best ones", 
+                                             "Not the USA or Canada", "Narnia", "insanity lately", 
+                                             "I don't know anymore", "god's country", 
+                                             "Fear and Loathing", "endland", "Earth", "Denial", 
+                                             "A", "A tropical island south of the equator", 
+                                             "United Statea", "United staes", "this one", 
+                                             "there isn't one for old men", "one of the best ones", 
+                                             "subscribe to dm4uz3 on youtube", "Neverland" 
+                                             ))) 
+
+country_tidied_combined_data <- replacing_with_na %>% 
   mutate(country = recode(country, "usa" = "USA", 
                           "us" = "USA", 
+                          "españa" = "Spain", 
+                          "belgium" = "Belgium", 
                           "US" = "USA", 
                           "USSA" = "USA", 
                           "USA!!!!!!" = "USA", 
@@ -144,15 +162,24 @@ country_tidied_combined_data <- combined %>%
                           = "USA", 
                           "Usa" = "USA", 
                           "uSA" = "USA", 
+                          "USa" = "USA", 
                           "Units States" = "USA", 
                           "United Stetes" = "USA", 
                           "United States of America" = "USA", 
+                          "The United States of America" = "USA", 
                           "UNited States" = "USA", 
                           "United States" = "USA", 
                           "United  States of America" = "USA", 
                           "United State" = "USA", 
                           "United Sates" = "USA", 
+                          "Unites States" = "USA", 
+                          "The United States" = "USA", 
                           "U.S.A." = "USA", 
+                          "u.s.a" = "USA", 
+                          "u.s.a." = "USA", 
+                          "United Stated" = "USA", 
+                          "United Statss" = "USA", 
+                          "united States" = "USA", 
                           "U.S." = "USA", 
                           "U.s." = "USA", 
                           "Trumpistan" = "USA", 
@@ -283,7 +310,7 @@ dropping_missing_values <- long_data %>%
 removing_extra_age_information <- dropping_missing_values %>% 
   mutate(age = str_remove(age, "[A-Za-z-!'?]+")) 
          
-write_csv(removing_extra_age_information, "clean_halloween_candy_data.CSV") 
+write_csv(removing_extra_age_information, "clean_halloween_candy_bar_data.CSV") 
 
 
 
