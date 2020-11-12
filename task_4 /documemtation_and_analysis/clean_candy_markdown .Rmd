@@ -1,0 +1,101 @@
+---
+title: "Task 4: Halloween Candy Data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# The raw data 
+
+This task came with three excel data sets : 
+  <ol> 
+  <li> The first file contained the data collected from 2015. The most noticeable difference in this file is that unlike the others, it did not contain a country column </li> 
+  <li> The second file contained the data collected from 2016 </li> 
+  <li> The third file contained data from 2017 </li> 
+  </ol> 
+  
+The data was gathered from a survey in which people rated different halloween candies. The data was particularly messy and so some big assumptions had to be made about this data:  
+
+* There was an assortment of rated items that were not related to halloween candy across all three datasets. I made the assumption these would not be relevant to the analysis and dropped them. 
+
+* Where there was a clear mispelling of a country or the country was referenced I recoded the name to a suitable choice. In some cases the country entry was irrelevant and not informative so I chose to just convert these to NA. 
+
+# Cleaning the data 
+
+After loading the relevant packages and reading in the data, my first step was to clean the colummn names with the janitor function clean_names. 
+
+```{r, warning = FALSE, message = FALSE}
+library(tidyverse) 
+library(dplyr) 
+library(janitor) 
+library(here) 
+library(stringr) 
+library(lubridate) 
+library(naniar) 
+```
+
+```{r, message = FALSE}
+data_2015 <- readxl::read_xlsx(here("raw_data/candy_ranking_data/boing-boing-candy-2015.xlsx")) 
+data_2016 <- readxl::read_xlsx(here("raw_data/candy_ranking_data/boing-boing-candy-2016.xlsx")) 
+data_2017 <- readxl::read_xlsx(here("raw_data/candy_ranking_data/boing-boing-candy-2017.xlsx")) 
+```
+
+```{r, message = FALSE}
+cleaned_names_data_2015 <- clean_names(data_2015) 
+cleaned_names_data_2016 <- clean_names(data_2016) 
+cleaned_names_data_2017 <- clean_names(data_2017) 
+```
+
+I made a "Year" column in order to be able to distinguish the year of the survey once the timestamp and internal ID column had been dropped. The column names in 2017 were preceded by "Q1", "Q2" and so on. To get rid of these I used the following code: 
+
+```{r, results = "hide"} 
+cleaned_names_data_2017 %>% 
+  rename_with(.fn = ~ str_remove_all(., "q[0-9]+_"), cols = everything()) 
+```
+
+I dropped the unnecessary columns from each data set, these code chunks were very long so I chose not to include them in the markdown but I used the select function to do this. 
+
+I used the rename function so each data set had the same column name for asking if the person was going trick or treating. 
+
+Once this cleaning was done I joined the two datasets and used the replace_with_na function from the naniar package to replace the values I deemed not relevant with missing values. I then used the recode function to hard code the names of countries where there had been mispellings or different names used. 
+
+I pivoted the dataset so candy and ratings were two distinct columns, dropped missing values from the rating column and removed text or characters from the age column. 
+
+At this point I used the write_csv function to convert the data to a CSV for analysis. 
+
+# Analysis 
+
+<ul> 
+  <li> What is the total number of candy ratings given across the three years. (number of candy ratings, not number of raters. Don’t count missing values) </li> 
+* 534517 
+</ul>
+
+<ul> 
+  <li> What was the average age of people who are going out trick or treating and the average age of people 3. not going trick or treating? </li> 
+* Not going: 39  
+Going: 35 
+</ul>
+
+<ul>
+ <li> For each of joy, despair and meh, which candy bar revived the most of these ratings? </li> 
+* Reece's peanut butter cups recieved the most joy ratings, mary janes recieved the most despair ratings and lollipops recieved the most meh ratings. 
+</ul> 
+
+<ul> 
+  <li> How many people rated Starburst as despair? </li> 
+* Despair was put for Starburst 1990 times 
+</ul> 
+
+<ul> 
+  <li> What was the most popular candy bar by this rating system for each gender in the dataset? </li> 
+* For females and males the most popular candy with this rating system was Reece's peanut butter cups. 
+</ul> 
+
+<ul> 
+  <li> What was the most popular candy bar in each year? </li> 
+* Reece's peanut butter cups were the most popular candy bar in 2015 and 2017. KitKat was the most popular in 2016. 
+</ul> 
+
+

@@ -130,10 +130,6 @@ combined <- bind_rows(rename_tricks_treating_2017, rename_age_2016, renamed_age_
 
 #Recoding country names 
 
-#replace_with_na(replace = list(x = c(-99,-98),
-                               #z = c(-99, -98))) 
-
-
 replacing_with_na <- combined %>% 
   replace_with_na(replace = list(country = c("Somewhere", "See above", "One of the best ones", 
                                              "Not the USA or Canada", "Narnia", "insanity lately", 
