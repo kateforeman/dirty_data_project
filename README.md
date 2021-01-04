@@ -36,4 +36,4 @@ identifiable name. The data was pivoted to a long format and was saved to a .csv
 
 ## Running the code 
 
-For more detailed explanation of the data wrangling and analysis process, a markdown can be found within the documentation_and_analysis folders of each project. . To explore the raw data, cleaning process and analysis for the two projects, 
+For more detailed explanation of the data wrangling and analysis process, a markdown can be found within the documentation_and_analysis folders of each project. To explore the raw data, cleaning process and analysis for the two projects, clone this repo and open in R. 
